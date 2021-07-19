@@ -18,7 +18,7 @@ from tensorflow.keras.layers import Dense
 from azureml.core import Workspace
 from azureml.mlflow import get_portal_url
 from azureml.core.authentication import ServicePrincipalAuthentication
-
+import mlflow.azureml
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'

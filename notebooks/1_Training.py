@@ -27,6 +27,9 @@
 # MAGIC **Algorithms**
 # MAGIC - Linear Regression
 # MAGIC - 2 hidden layer NN
+# MAGIC 
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/mlflow_train.jpg?sv=2020-04-08&st=2021-07-19T12%3A48%3A22Z&se=2021-07-30T12%3A48%3A00Z&sr=b&sp=r&sig=eAR570f3wa7efGpu1ohZ3tvlc%2FOFLmLau84Ihrrvosg%3D' width='600px'>
 
 # COMMAND ----------
 
@@ -100,10 +103,12 @@ history = model.fit(train_dataset, validation_data=test_dataset, epochs=500, ver
 # MAGIC 
 # MAGIC # Step 2 : Model Selection
 # MAGIC 
-# MAGIC In this step, we are selecting the best trained model by **RMSE** and register it in **Azure Machine Learning service**
+# MAGIC In this step, we are selecting the best trained model by **RMSE** recorded in MLflow tracking and register it in **Azure Machine Learning service**
 # MAGIC 
 # MAGIC 
 # MAGIC ### 2.1 Select best model
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/mlflow_model_selection.jpg?sv=2020-04-08&st=2021-07-19T12%3A52%3A50Z&se=2021-07-30T12%3A52%3A00Z&sr=b&sp=r&sig=R%2FmvwRDIXGgCIfuB%2FuWsssFqVyCkMcpBe1PSQiLBPtw%3D' width='600px'>
 
 # COMMAND ----------
 
@@ -130,6 +135,9 @@ print(model_uri)
 
 # MAGIC %md
 # MAGIC ### 2.2 Register Model and build a container image
+# MAGIC 
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/mlflow_model_registry.jpg?sv=2020-04-08&st=2021-07-19T12%3A53%3A20Z&se=2021-07-30T12%3A53%3A00Z&sr=b&sp=r&sig=%2BdOJAj7PVEaiwh5jDGzuYQb9oUs0c9ApYwbBMooYnGA%3D' width='600px'>
 
 # COMMAND ----------
 
@@ -145,15 +153,13 @@ azureml_workspace = Workspace(
        workspace_name='sparkml',
        auth=service_principal_auth(tenant_id, service_principal_clientid , service_principal_secret))
 
+# Link to Azure Machine Learning 
 uri = azureml_workspace.get_mlflow_tracking_uri()
-print(uri)
 mlflow.set_tracking_uri(uri)
 
 
-# COMMAND ----------
-
-import mlflow.azureml
 # Build an Azure ML Container Image for an MLflow model
+# This step could take 8 - 10 minutes
 azure_image, azure_model = mlflow.azureml.build_image(model_uri=model_uri,
                                                       workspace=azureml_workspace,
                                                       image_name='km-predictor-image',
@@ -163,10 +169,13 @@ azure_image, azure_model = mlflow.azureml.build_image(model_uri=model_uri,
 # If your image build failed, you can access build logs at the following URI:
 print("Access the following URI for build logs: {}".format(azure_image.image_build_log_uri))
 
-# COMMAND ----------
-
-azure_image
 
 # COMMAND ----------
 
-
+# MAGIC %md
+# MAGIC # Step 3 : Model Deployment
+# MAGIC 
+# MAGIC In this step, model registry will trigger an automatic deployment to production. A published Azure Machine Learning pipeline will be triggered to create a web service using recent registered model.
+# MAGIC 
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/mlflow_production.jpg?sv=2020-04-08&st=2021-07-19T12%3A56%3A03Z&se=2021-07-30T12%3A56%3A00Z&sr=b&sp=r&sig=SQaPCf%2BV079Svw6C4h6WH3mj9OF60ssCUxDtX09s%2F3Y%3D' width='600px'>
