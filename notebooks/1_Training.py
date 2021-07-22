@@ -9,10 +9,16 @@
 # MAGIC **Output:** KM (float)
 # MAGIC 
 # MAGIC 
-# MAGIC Data source: Random sampled numbers between (1, 50000) with random noise
+# MAGIC Data source: Random sampled numbers between (1, 50000) with random noise.
 # MAGIC 
 # MAGIC 
-# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/tp_ml.jpg?sv=2020-04-08&st=2021-07-18T21%3A40%3A05Z&se=2021-07-30T21%3A40%3A00Z&sr=b&sp=r&sig=3Tu%2Ff2KzNHlBE0O4zYUKceUvR5DIgsFh2RyxcrE0RdQ%3D' alt="Traditional Programming vs Machine Learning">
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/tp_ml.jpg?sv=2020-04-08&st=2021-07-18T21%3A40%3A05Z&se=2021-07-30T21%3A40%3A00Z&sr=b&sp=r&sig=3Tu%2Ff2KzNHlBE0O4zYUKceUvR5DIgsFh2RyxcrE0RdQ%3D' alt="Traditional Programming vs Machine Learning" width='1000px'>
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/KM_achitecture.jpg?sv=2020-04-08&st=2021-07-21T03%3A01%3A59Z&se=2021-07-31T03%3A01%3A00Z&sr=b&sp=r&sig=D3eqep9hW5aReuFzj%2F1AQu1VwxPfXD7EdA%2FYyBi%2B8u4%3D' alt="MLOps Architecture" width='600px'>
 
 # COMMAND ----------
 
@@ -33,7 +39,7 @@
 
 # COMMAND ----------
 
-experiment_name = "/Users/louisli@microsoft.com/mlflow-demo" 
+experiment_name = "/Shared/mlflow-demo" 
 mlflow.set_experiment(experiment_name)
 
 # COMMAND ----------
@@ -85,8 +91,8 @@ mlflow.tensorflow.autolog()
 
 # define model
 model = Sequential()
-model.add(Dense(16, input_shape=(1,)))
-model.add(Dense(32))
+model.add(Dense(8, input_shape=(1,)))
+model.add(Dense(16))
 model.add(Dense(1))
 # compile the model
 model.compile(optimizer='adam', loss='mse', metrics=[tf.keras.metrics.RootMeanSquaredError(name='rmse')])
@@ -179,3 +185,11 @@ print("Access the following URI for build logs: {}".format(azure_image.image_bui
 # MAGIC 
 # MAGIC 
 # MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/mlflow_production.jpg?sv=2020-04-08&st=2021-07-19T12%3A56%3A03Z&se=2021-07-30T12%3A56%3A00Z&sr=b&sp=r&sig=SQaPCf%2BV079Svw6C4h6WH3mj9OF60ssCUxDtX09s%2F3Y%3D' width='600px'>
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/ReleasePipeline.jpg?sv=2020-04-08&st=2021-07-19T17%3A43%3A36Z&se=2021-07-30T17%3A43%3A00Z&sr=b&sp=r&sig=WCdx%2FNBASXRug1wzxxPXjuiaNQOJFa%2BEtopzDP3DlMA%3D' width='600px'>
+# MAGIC 
+# MAGIC <img src ='https://onebigdatabag.blob.core.windows.net/sparkdemo/DevOpsPublishedPipeline.jpg?sv=2020-04-08&st=2021-07-19T17%3A41%3A32Z&se=2021-07-30T17%3A41%3A00Z&sr=b&sp=r&sig=sJ%2FVzFGWLEggQ2GtABvMrvK3LxplHp25uagQhlACP4I%3D' width='600px'>
